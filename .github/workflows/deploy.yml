@@ -16,27 +16,13 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_PASSWORD }}
       -
-        name: docker build
-        run: |
-         docker build -t ${{ secrets.IMAGE_NAME }
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v2
       -
-        name: docker tag image
-        run: |
-         docker tag ${{ secrets.IMAGE_NAME } ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }:latest
-        
-      - 
-        name: docker push image to docker hub
-        run: |
-          docker push ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }:latest
-
-      # -
-      #   name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v2
-      # -
-      #   name: Build and push
-      #   uses: docker/build-push-action@v4
-      #   with:
-      #     context: .
-      #     file: ./Dockerfile
-      #     push: true
-      #     tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
+        name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.IMAGE_NAME }}:latest
