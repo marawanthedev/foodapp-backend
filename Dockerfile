@@ -1,16 +1,18 @@
-# needed for node building
-FROM node:17-alpine
+# Use a specific version of Node.js
+FROM node:17.4.0-alpine
 
+# Set the working directory
 WORKDIR /app
 
+# Copy the package.json file and install dependencies
 COPY package.json .
-
 RUN npm install
 
+# Copy the rest of the application code
 COPY . .
 
-# default for react 
+# Expose port 3000
 EXPOSE 3000
 
-# each item is a word in the command
-CMD ["npm","run","start:dev"]
+# Start the application
+CMD ["npm", "run", "start:dev"]
